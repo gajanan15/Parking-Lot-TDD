@@ -1,58 +1,52 @@
 package com.parkinglotsystem;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ParkingLot {
     public boolean isParkingFull = false;
-    Map<String, CarInformation> parkingMap;
-    List<CarInformation> carList;
+    Map<String, ArrayList<CarInformation>> parkingMap;
+    ArrayList<CarInformation> carList = new ArrayList<>();
     public static final int capacity = 100;
+    int initialSlotCapacity = 7;
 
     public ParkingLot() {
-        parkingMap = new HashMap<>();
-        carList = new LinkedList<>();
+        parkingMap = new HashMap<String, ArrayList<CarInformation>>();
     }
 
     public int getParkingSize() {
         return capacity;
     }
 
-    public Boolean parkTheCar(String slotNumber, CarInformation carDetails) throws ParkingLotException {
-        isParkingSpaceAvailable();
-        if (carList.size() < capacity) {
-            carList.add(carDetails);
-            parkingMap.put(slotNumber, carDetails);
+    public Map<String, ArrayList<CarInformation>> parkTheCar(String slotNumber, CarInformation... carDetails) {
+        if (carDetails != null) {
+            parkingMap.put(slotNumber, carList);
+            for (CarInformation details : carDetails) {
+                if (carList.size() != initialSlotCapacity) {
+                    parkingMap.get(slotNumber).add(details);
+                } else {
+                    throw new ParkingLotException("No Empty Sloat", ParkingLotException.ExceptionType.PARKING_FULL);
+                }
+            }
+            return parkingMap;
         }
-        if (carList.size() >= capacity) {
-            return isParkingFull = true;
-        }
-        return false;
+        return null;
     }
 
-    public void isParkingSpaceAvailable() throws ParkingLotException {
+    public void isParkingSpaceAvailable() {
         if (isParkingFull) {
             throw new ParkingLotException("No Parking Space Available!!!", ParkingLotException.ExceptionType.PARKING_FULL);
         }
     }
 
-    public Boolean parkVehicle(String slotNumber, CarInformation carDetails) {
-        if (parkingMap.size() < 100) {
-            parkingMap.put(slotNumber, carDetails);
-            return true;
+    public boolean unParkCar(String slotNumber) {
+        Iterator<Map.Entry<String, ArrayList<CarInformation>>> iterator = parkingMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, ArrayList<CarInformation>> entry = iterator.next();
+            if (slotNumber == entry.getKey()) {
+                iterator.remove();
+                return true;
+            }
         }
         return false;
-    }
-
-    public void unParkCar(String slotNumber) {
-        parkingMap.remove(slotNumber);
-    }
-
-    public boolean searchVehicle(String slotNumber) {
-        if(parkingMap.get(slotNumber)!=null)
-            return false;
-        return true;
     }
 }

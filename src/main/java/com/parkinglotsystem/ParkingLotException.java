@@ -1,6 +1,6 @@
 package com.parkinglotsystem;
 
-public class ParkingLotException extends Exception {
+public class ParkingLotException extends RuntimeException {
     public ExceptionType type;
 
     public enum ExceptionType {
