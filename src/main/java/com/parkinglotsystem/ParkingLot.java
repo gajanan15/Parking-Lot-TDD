@@ -7,7 +7,7 @@ public class ParkingLot {
     Map<String, ArrayList<CarInformation>> parkingMap;
     ArrayList<CarInformation> carList = new ArrayList<>();
     public static final int capacity = 100;
-    int initialSlotCapacity = 7;
+    int initialSlotCapacity = 25;
 
     public ParkingLot() {
         parkingMap = new HashMap<String, ArrayList<CarInformation>>();

@@ -29,17 +29,15 @@ public class ParkingLotTest {
     }
 
     @Test
-    public  void givenCarDetail_IfUnParked_Return_True() {
+    public void givenCarDetail_IfUnParked_Return_True() {
         CarInformation carInformation1 = new CarInformation("MH-04-GV-7397", "BMW", "WHITE");
-        CarInformation carInformation2= new CarInformation("MH-04-XY-5268", "Toyota", "RED");
-        parkingLot.parkTheCar("s01.1",carInformation1);
-        parkingLot.parkTheCar("s01.2",carInformation2);
-        boolean unparkedVehicle = parkingLot.unParkCar("s01.1");
+        parkingLot.parkTheCar("s01", carInformation1);
+        boolean unparkedVehicle = parkingLot.unParkCar("s01");
         Assert.assertTrue(unparkedVehicle);
     }
 
     @Test
-    public void givenAnParkingLotIsNotEmpty_ShouldThrowException() {
+    public void givenAnParkingLotIsFull_ShouldThrowException() {
         CarInformation carInformation = new CarInformation("MH 04 GV 7397", "BMW", "Black");
         try {
             for (int i = 0; i < 100; i++) {
@@ -51,18 +49,11 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void givenParkingLotCapacity_WhenFull_Informssecuritystaff() {
-        try {
-            parkingLot.parkTheCar("s01",new CarInformation("MH-04-GH_-2145","Toyota","Black")
-                    , new CarInformation("MH-54-BH_-2145","BMW","Black")
-                    , new CarInformation("MH-02-JS_-2145","NANO","Black")
-                    , new CarInformation("MH-04-GR_-2145","NANO","Black")
-                    ,new CarInformation("MH-21-VG_-2145","Toyota","Black")
-                    ,new CarInformation("MH-46-AS_-2145","MARUTI","Black")
-                    ,new CarInformation("MH-14-KJ_-2145","BMW","Black")
-                    ,new CarInformation("MH-25-PO_-2145","Toyota","Black"));
-        } catch (ParkingLotException e) {
-            Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_FULL, e.type);
-        }
+    public void givenParkingLotCapacity_WhenSpaceAvailable_ShouldReturnTrue() {
+        parkingLot.parkTheCar("s01", new CarInformation("MH-04-GV-7937", "BMW", "Black"));
+        parkingLot.parkTheCar("s02", new CarInformation("MH-54-BH_-2145", "BMW", "Black"));
+        parkingLot.parkTheCar("s03", new CarInformation("MH-02-JS_-2145", "NANO", "Black"));
+        boolean removeCar = parkingLot.unParkCar("s02");
+        Assert.assertTrue(removeCar);
     }
 }
